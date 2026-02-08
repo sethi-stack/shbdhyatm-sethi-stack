@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#667eea" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta
+			name="apple-mobile-web-app-title"
+			content="Shabdhyatm + Sethi Stack"
+		/>
+		<link rel="manifest" href="manifest.json" />
+		<link rel="apple-touch-icon" href="icon-192.png" />
+		<title>Shabdhyatm + Sethi Stack</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family:
+					-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+					sans-serif;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				min-height: 100vh;
+				padding: 20px;
+			}
+
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				background: white;
+				border-radius: 20px;
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+				overflow: hidden;
+			}
+
+			.header {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				padding: 30px;
+				text-align: center;
+			}
+
+			.header h1 {
+				font-size: 2em;
+				margin-bottom: 10px;
+			}
+
+			.date {
+				font-size: 1.1em;
+				opacity: 0.9;
+			}
+
+			.header-controls {
+				margin-top: 15px;
+				display: flex;
+				gap: 10px;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+
+			.header-controls button {
+				padding: 8px 16px;
+				background: rgba(255, 255, 255, 0.2);
+				border: 2px solid rgba(255, 255, 255, 0.5);
+				color: white;
+				border-radius: 6px;
+				cursor: pointer;
+				font-size: 0.9em;
+				font-weight: 600;
+				transition: all 0.3s;
+			}
+
+			.header-controls button:hover {
+				background: rgba(255, 255, 255, 0.3);
+				border-color: white;
+			}
+
+			.hidden {
+				display: none;
+			}
+
+			.content {
+				padding: 30px;
+			}
+
+			.view-toggle {
+				display: flex;
+				gap: 10px;
+				margin-bottom: 30px;
+				justify-content: center;
+			}
+
+			.view-toggle button {
+				padding: 12px 24px;
+				border: 2px solid #667eea;
+				background: white;
+				color: #667eea;
+				border-radius: 8px;
+				cursor: pointer;
+				font-size: 1em;
+				font-weight: 600;
+				transition: all 0.3s;
+			}
+
+			.view-toggle button.active {
+				background: #667eea;
+				color: white;
+			}
+
+			.view-toggle button:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+			}
+
+			.today-section {
+				background: #f8f9fa;
+				border-radius: 12px;
+				padding: 30px;
+				margin-bottom: 30px;
+			}
+
+			.today-title {
+				font-size: 1.5em;
+				color: #333;
+				margin-bottom: 20px;
+				text-align: center;
+			}
+
+			.habits-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 15px;
+			}
+
+			.habit-card {
+				background: white;
+				border-radius: 12px;
+				padding: 20px;
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				cursor: pointer;
+				transition: all 0.3s;
+				border: 3px solid transparent;
+			}
+
+			.habit-card:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+			}
+
+			.habit-card.checked {
+				border-color: #10b981;
+				background: #f0fdf4;
+			}
+
+			.habit-icon {
+				font-size: 2em;
+				min-width: 50px;
+				text-align: center;
+			}
+
+			.habit-info {
+				flex: 1;
+			}
+
+			.habit-name {
+				font-size: 1.1em;
+				font-weight: 600;
+				color: #333;
+				margin-bottom: 5px;
+			}
+
+			.habit-streak {
+				font-size: 0.9em;
+				color: #6b7280;
+			}
+
+			.checkmark {
+				width: 30px;
+				height: 30px;
+				border: 3px solid #d1d5db;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.2em;
+				transition: all 0.3s;
+			}
+
+			.habit-card.checked .checkmark {
+				background: #10b981;
+				border-color: #10b981;
+				color: white;
+			}
+
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 20px;
+				margin-bottom: 30px;
+			}
+
+			.stat-card {
+				background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+				color: white;
+				padding: 20px;
+				border-radius: 12px;
+				text-align: center;
+			}
+
+			.stat-value {
+				font-size: 2.5em;
+				font-weight: 700;
+				margin-bottom: 5px;
+			}
+
+			.stat-label {
+				font-size: 0.9em;
+				opacity: 0.9;
+			}
+
+			.heatmap-section {
+				display: none;
+			}
+
+			.heatmap-section.active {
+				display: block;
+			}
+
+			.heatmap-title {
+				font-size: 1.3em;
+				color: #333;
+				margin-bottom: 20px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+
+			.heatmap-controls {
+				display: flex;
+				gap: 10px;
+				margin-bottom: 20px;
+				flex-wrap: wrap;
+			}
+
+			.heatmap-controls select {
+				padding: 10px;
+				border: 2px solid #e5e7eb;
+				border-radius: 8px;
+				font-size: 1em;
+			}
+
+			.heatmap-grid {
+				display: grid;
+				grid-template-columns: auto 1fr;
+				gap: 10px;
+				margin-bottom: 30px;
+			}
+
+			.heatmap-habit-label {
+				display: flex;
+				align-items: center;
+				padding: 5px 10px;
+				font-size: 0.9em;
+				font-weight: 500;
+			}
+
+			.heatmap-row {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, 16px);
+				gap: 3px;
+			}
+
+			.heatmap-cell {
+				width: 16px;
+				height: 16px;
+				background: #e5e7eb;
+				border-radius: 3px;
+				position: relative;
+				cursor: pointer;
+				transition: all 0.2s;
+			}
+
+			.heatmap-cell:hover {
+				transform: scale(1.3);
+				z-index: 10;
+			}
+
+			.heatmap-cell.level-0 {
+				background: #f3f4f6;
+			}
+			.heatmap-cell.level-1 {
+				background: #c7d2fe;
+			}
+			.heatmap-cell.level-2 {
+				background: #a5b4fc;
+			}
+			.heatmap-cell.level-3 {
+				background: #818cf8;
+			}
+			.heatmap-cell.level-4 {
+				background: #6366f1;
+			}
+			.heatmap-cell.level-5 {
+				background: #4f46e5;
+			}
+			.heatmap-cell.level-6 {
+				background: #4338ca;
+			}
+
+			.heatmap-cell.today {
+				border: 2px solid #333;
+			}
+
+			.tooltip {
+				position: fixed;
+				background: #1f2937;
+				color: white;
+				padding: 8px 12px;
+				border-radius: 6px;
+				font-size: 0.85em;
+				pointer-events: none;
+				z-index: 1000;
+				display: none;
+				white-space: nowrap;
+			}
+
+			.legend {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				margin-top: 20px;
+				font-size: 0.85em;
+				color: #6b7280;
+			}
+
+			.legend-item {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+			}
+
+			.legend-box {
+				width: 16px;
+				height: 16px;
+				border-radius: 3px;
+			}
+
+			.month-labels {
+				grid-column: 2;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, 16px);
+				gap: 3px;
+				font-size: 0.75em;
+				color: #6b7280;
+				margin-bottom: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h1>🎯 Shabdhyatm + Sethi Stack</h1>
+				<div class="date" id="today-date"></div>
+				<div class="header-controls">
+					<button onclick="exportData()">📥 Export Data</button>
+					<button onclick="document.getElementById('import-file').click()">
+						📤 Import Data
+					</button>
+					<button onclick="clearAllData()">🗑️ Clear All Data</button>
+				</div>
+				<input
+					type="file"
+					id="import-file"
+					class="hidden"
+					accept=".json"
+					onchange="importData(event)"
+				/>
+			</div>
+
+			<div class="content">
+				<div class="view-toggle">
+					<button class="active" onclick="showView('today')">Today</button>
+					<button onclick="showView('week')">This Week</button>
+					<button onclick="showView('month')">This Month</button>
+					<button onclick="showView('year')">This Year</button>
+				</div>
+
+				<div id="today-view" class="view-section">
+					<div class="today-section">
+						<div class="today-title">Check off today's habits ✨</div>
+						<div class="habits-grid" id="habits-container"></div>
+					</div>
+				</div>
+
+				<div id="stats-view" class="heatmap-section">
+					<div class="stats" id="stats-container"></div>
+
+					<div class="heatmap-title">
+						<span>📊</span>
+						<span id="heatmap-period-title">Habit Heatmap</span>
+					</div>
+
+					<div id="heatmap-container"></div>
+
+					<div class="legend">
+						<span>Less</span>
+						<div class="legend-item">
+							<div class="legend-box" style="background: #f3f4f6"></div>
+						</div>
+						<div class="legend-item">
+							<div class="legend-box" style="background: #c7d2fe"></div>
+						</div>
+						<div class="legend-item">
+							<div class="legend-box" style="background: #818cf8"></div>
+						</div>
+						<div class="legend-item">
+							<div class="legend-box" style="background: #4338ca"></div>
+						</div>
+						<span>More</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tooltip" id="tooltip"></div>
+
+		<script>
+			const habits = [
+				{ id: 'singing', name: 'Karnatic Singing', icon: '🎤' },
+				{ id: 'meditation', name: 'Meditation', icon: '🧘' },
+				{ id: 'yoga', name: 'Yoga/Calisthenics', icon: '🧘‍♀️' },
+				{ id: 'tech', name: 'Tech Craft', icon: '💻' },
+				{ id: 'social', name: 'Family & Friends', icon: '👨‍👩‍👧‍👦' },
+				{ id: 'food', name: 'Good Food', icon: '🍽️' },
+			];
+
+			let currentView = 'today';
+			let habitData = JSON.parse(localStorage.getItem('habitData')) || {};
+
+			// Initialize
+			function init() {
+				const today = new Date().toLocaleDateString('en-US', {
+					weekday: 'long',
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric',
+				});
+				document.getElementById('today-date').textContent = today;
+
+				renderHabits();
+				renderHeatmap('week');
+			}
+
+			function renderHabits() {
+				const container = document.getElementById('habits-container');
+				const todayKey = getTodayKey();
+
+				if (!habitData[todayKey]) {
+					habitData[todayKey] = {};
+				}
+
+				container.innerHTML = habits
+					.map((habit) => {
+						const isChecked = habitData[todayKey][habit.id] || false;
+						const streak = calculateStreak(habit.id);
+
+						return `
+                    <div class="habit-card ${isChecked ? 'checked' : ''}" onclick="toggleHabit('${habit.id}')">
+                        <div class="habit-icon">${habit.icon}</div>
+                        <div class="habit-info">
+                            <div class="habit-name">${habit.name}</div>
+                            <div class="habit-streak">${streak} day streak 🔥</div>
+                        </div>
+                        <div class="checkmark">${isChecked ? '✓' : ''}</div>
+                    </div>
+                `;
+					})
+					.join('');
+			}
+
+			function toggleHabit(habitId) {
+				const todayKey = getTodayKey();
+
+				if (!habitData[todayKey]) {
+					habitData[todayKey] = {};
+				}
+
+				habitData[todayKey][habitId] = !habitData[todayKey][habitId];
+				localStorage.setItem('habitData', JSON.stringify(habitData));
+
+				renderHabits();
+				if (currentView !== 'today') {
+					renderHeatmap(currentView);
+				}
+			}
+
+			function getTodayKey() {
+				const today = new Date();
+				return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+			}
+
+			function calculateStreak(habitId) {
+				let streak = 0;
+				let currentDate = new Date();
+
+				while (true) {
+					const dateKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+
+					if (habitData[dateKey] && habitData[dateKey][habitId]) {
+						streak++;
+						currentDate.setDate(currentDate.getDate() - 1);
+					} else {
+						break;
+					}
+				}
+
+				return streak;
+			}
+
+			function showView(view) {
+				currentView = view;
+
+				document.querySelectorAll('.view-toggle button').forEach((btn) => {
+					btn.classList.remove('active');
+				});
+				event.target.classList.add('active');
+
+				if (view === 'today') {
+					document.getElementById('today-view').style.display = 'block';
+					document.getElementById('stats-view').classList.remove('active');
+				} else {
+					document.getElementById('today-view').style.display = 'none';
+					document.getElementById('stats-view').classList.add('active');
+					renderStats(view);
+					renderHeatmap(view);
+				}
+			}
+
+			function renderStats(period) {
+				const container = document.getElementById('stats-container');
+				const dates = getDateRange(period);
+
+				let totalChecks = 0;
+				let totalPossible = dates.length * habits.length;
+				let bestHabit = null;
+				let bestCount = 0;
+
+				habits.forEach((habit) => {
+					let count = 0;
+					dates.forEach((date) => {
+						if (habitData[date] && habitData[date][habit.id]) {
+							count++;
+							totalChecks++;
+						}
+					});
+
+					if (count > bestCount) {
+						bestCount = count;
+						bestHabit = habit;
+					}
+				});
+
+				const percentage =
+					totalPossible > 0
+						? Math.round((totalChecks / totalPossible) * 100)
+						: 0;
+
+				container.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${percentage}%</div>
+                    <div class="stat-label">Completion Rate</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <div class="stat-value">${totalChecks}</div>
+                    <div class="stat-label">Total Habits Done</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <div class="stat-value">${bestHabit ? bestHabit.icon : '🎯'}</div>
+                    <div class="stat-label">Top Habit: ${bestHabit ? bestHabit.name : 'None yet'}</div>
+                </div>
+            `;
+			}
+
+			function getDateRange(period) {
+				const dates = [];
+				const today = new Date();
+				let startDate = new Date();
+
+				switch (period) {
+					case 'week':
+						startDate.setDate(today.getDate() - 6);
+						document.getElementById('heatmap-period-title').textContent =
+							'This Week';
+						break;
+					case 'month':
+						startDate.setDate(today.getDate() - 29);
+						document.getElementById('heatmap-period-title').textContent =
+							'Last 30 Days';
+						break;
+					case 'year':
+						startDate.setDate(today.getDate() - 364);
+						document.getElementById('heatmap-period-title').textContent =
+							'This Year';
+						break;
+				}
+
+				for (
+					let d = new Date(startDate);
+					d <= today;
+					d.setDate(d.getDate() + 1)
+				) {
+					dates.push(
+						`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+					);
+				}
+
+				return dates;
+			}
+
+			function renderHeatmap(period) {
+				const container = document.getElementById('heatmap-container');
+				const dates = getDateRange(period);
+				const todayKey = getTodayKey();
+
+				let html = '<div class="heatmap-grid">';
+
+				// Add empty cell for alignment
+				html += '<div></div>';
+
+				// Add month labels for year view
+				if (period === 'year') {
+					html += '<div class="month-labels">';
+					let lastMonth = '';
+					dates.forEach((date, index) => {
+						const d = new Date(date);
+						const monthName = d.toLocaleDateString('en-US', { month: 'short' });
+						if (monthName !== lastMonth && index % 4 === 0) {
+							html += `<span style="grid-column: span 4;">${monthName}</span>`;
+							lastMonth = monthName;
+						}
+					});
+					html += '</div>';
+				}
+
+				habits.forEach((habit) => {
+					html += `<div class="heatmap-habit-label">${habit.icon} ${habit.name}</div>`;
+					html += '<div class="heatmap-row">';
+
+					dates.forEach((date) => {
+						const isChecked = habitData[date] && habitData[date][habit.id];
+						const level = isChecked ? 6 : 0;
+						const isToday = date === todayKey;
+						const dateObj = new Date(date);
+						const displayDate = dateObj.toLocaleDateString('en-US', {
+							month: 'short',
+							day: 'numeric',
+						});
+
+						html += `<div class="heatmap-cell level-${level} ${isToday ? 'today' : ''}" 
+                                  data-date="${date}" 
+                                  data-habit="${habit.name}"
+                                  data-display-date="${displayDate}"
+                                  onmouseover="showTooltip(event, '${habit.name}', '${displayDate}', ${isChecked})"
+                                  onmouseout="hideTooltip()"></div>`;
+					});
+
+					html += '</div>';
+				});
+
+				html += '</div>';
+				container.innerHTML = html;
+			}
+
+			function showTooltip(event, habitName, date, isChecked) {
+				const tooltip = document.getElementById('tooltip');
+				tooltip.textContent = `${habitName} - ${date}: ${isChecked ? '✓ Done' : '○ Not done'}`;
+				tooltip.style.display = 'block';
+				tooltip.style.left = event.pageX + 10 + 'px';
+				tooltip.style.top = event.pageY + 10 + 'px';
+			}
+
+			function hideTooltip() {
+				document.getElementById('tooltip').style.display = 'none';
+			}
+
+			// Export data as JSON file
+			function exportData() {
+				const dataToExport = {
+					habitData: habitData,
+					exportDate: new Date().toISOString(),
+					version: '1.0',
+				};
+
+				const dataStr = JSON.stringify(dataToExport, null, 2);
+				const dataBlob = new Blob([dataStr], { type: 'application/json' });
+				const url = URL.createObjectURL(dataBlob);
+
+				const link = document.createElement('a');
+				link.href = url;
+				link.download = `habit-tracker-backup-${getTodayKey()}.json`;
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+				URL.revokeObjectURL(url);
+
+				alert('✅ Data exported successfully!');
+			}
+
+			// Import data from JSON file
+			function importData(event) {
+				const file = event.target.files[0];
+				if (!file) return;
+
+				const reader = new FileReader();
+				reader.onload = function (e) {
+					try {
+						const imported = JSON.parse(e.target.result);
+
+						if (imported.habitData) {
+							// Merge with existing data (keeps both old and new)
+							habitData = { ...habitData, ...imported.habitData };
+							localStorage.setItem('habitData', JSON.stringify(habitData));
+
+							// Refresh displays
+							renderHabits();
+							if (currentView !== 'today') {
+								renderStats(currentView);
+								renderHeatmap(currentView);
+							}
+
+							alert(
+								'✅ Data imported successfully! Your habit history has been updated.',
+							);
+						} else {
+							alert(
+								'❌ Invalid file format. Please upload a valid backup file.',
+							);
+						}
+					} catch (error) {
+						alert(
+							"❌ Error reading file. Please make sure it's a valid JSON backup.",
+						);
+					}
+				};
+				reader.readAsText(file);
+
+				// Reset file input
+				event.target.value = '';
+			}
+
+			// Clear all data
+			function clearAllData() {
+				if (
+					confirm(
+						'⚠️ Are you sure you want to clear ALL habit data? This cannot be undone!\n\nTip: Export your data first as a backup.',
+					)
+				) {
+					if (confirm('Really delete everything? This is your last chance!')) {
+						habitData = {};
+						localStorage.removeItem('habitData');
+
+						// Refresh displays
+						renderHabits();
+						if (currentView !== 'today') {
+							renderStats(currentView);
+							renderHeatmap(currentView);
+						}
+
+						alert('🗑️ All data has been cleared.');
+					}
+				}
+			}
+
+			init();
+		</script>
+	</body>
+</html>
