@@ -11,7 +11,7 @@ Your daily practice tracker - where poetry meets technology! 🎤💻
 - 🍽️ **Good Food**
 
 ## Features
-- ✅ Daily habit checkboxes
+- ✅ Daily wellness rhythm checkboxes
 - 🔥 Streak tracking
 - 📊 Visual heatmaps (week/month/year view)
 - 📥 Export/Import data
@@ -80,7 +80,7 @@ Since data is stored locally in each browser:
 4. Repeat whenever you want to sync
 
 ## Tips
-- Check off habits each day to build streaks 🔥
+- Check off your wellness rhythms each day to build streaks 🔥
 - View different time periods to see patterns
 - Export weekly/monthly as backup insurance
 - The heatmap gets more colorful as you build consistency!
