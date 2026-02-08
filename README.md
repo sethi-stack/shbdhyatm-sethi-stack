@@ -21,14 +21,14 @@ Your daily practice tracker - where poetry meets technology! 🎤💻
 ## Installation on Mobile
 
 ### iPhone/iPad (Safari)
-1. Open `habit_tracker.html` in Safari
+1. Open the app in Safari
 2. Tap the Share button (box with arrow)
 3. Scroll down and tap "Add to Home Screen"
 4. Tap "Add"
 5. The app icon will appear on your home screen!
 
 ### Android (Chrome)
-1. Open `habit_tracker.html` in Chrome
+1. Open the app in Chrome
 2. Tap the three-dot menu (⋮)
 3. Tap "Add to Home Screen" or "Install App"
 4. Tap "Add" or "Install"
@@ -39,21 +39,21 @@ Your daily practice tracker - where poetry meets technology! 🎤💻
 ### Quick Setup
 1. Create a new repository on GitHub
 2. Upload these files:
-   - `habit_tracker.html`
+   - `index.html`
    - `manifest.json`
    - `icon-192.png`
    - `icon-512.png`
 3. Go to Settings → Pages
 4. Under "Source", select "main" branch
 5. Click Save
-6. Your app will be live at: `https://yourusername.github.io/repo-name/habit_tracker.html`
+6. Your app will be live at: `https://yourusername.github.io/repo-name/`
 
 ### Creating Icons
 Open `create_icons.html` in your browser to automatically generate:
 - `icon-192.png` (for Android)
 - `icon-512.png` (for high-res displays)
 
-Save these files in the same directory as `habit_tracker.html`.
+Save these files in the same directory as `index.html`.
 
 ## Data Management
 
