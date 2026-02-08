@@ -1,0 +1,24 @@
+{
+  "name": "Shabdhyatm + Sethi Stack",
+  "short_name": "S+S",
+  "description": "Daily practice tracker: Shabdhyatm Yoga, Meditation, Yoga, Sethi Stack, Family & Friends, and Good Food",
+  "start_url": "./habit_tracker.html",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
