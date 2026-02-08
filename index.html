@@ -342,6 +342,65 @@
             color: #6b7280;
             margin-bottom: 5px;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .view-toggle {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .view-toggle button {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .today-section {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .header-controls button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .view-toggle {
+                gap: 6px;
+            }
+
+            .view-toggle button {
+                padding: 8px 12px;
+                font-size: 0.85em;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .today-title {
+                font-size: 1.2em;
+            }
+
+            .habits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
