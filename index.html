@@ -199,6 +199,47 @@
 				color: white;
 			}
 
+			.daily-notes-section {
+				background: #f8f9fa;
+				border-radius: 12px;
+				padding: 30px;
+				margin-top: 20px;
+			}
+
+			.notes-header {
+				font-size: 1.3em;
+				color: #333;
+				margin-bottom: 15px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				font-weight: 600;
+			}
+
+			#daily-notes {
+				width: 100%;
+				min-height: 120px;
+				padding: 15px;
+				border: 2px solid #e5e7eb;
+				border-radius: 8px;
+				font-family: inherit;
+				font-size: 1em;
+				resize: vertical;
+				transition: border-color 0.3s;
+			}
+
+			#daily-notes:focus {
+				outline: none;
+				border-color: #667eea;
+			}
+
+			.notes-counter {
+				text-align: right;
+				font-size: 0.85em;
+				color: #6b7280;
+				margin-top: 8px;
+			}
+
 			.stats {
 				display: grid;
 				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -456,6 +497,21 @@
 						<div class="today-title">Check off today's wellness rhythms ✨</div>
 						<div class="habits-grid" id="habits-container"></div>
 					</div>
+
+					<div class="daily-notes-section">
+						<div class="notes-header">
+							<span>📝</span>
+							<span>Daily Reflections</span>
+						</div>
+						<textarea
+							id="daily-notes"
+							placeholder="How was your day? What are you grateful for? Any insights or reflections..."
+							oninput="saveDailyNotes()"
+						></textarea>
+						<div class="notes-counter">
+							<span id="notes-char-count">0</span> characters
+						</div>
+					</div>
 				</div>
 
 				<div id="stats-view" class="heatmap-section">
@@ -502,6 +558,7 @@
 
 			let currentView = 'today';
 			let habitData = JSON.parse(localStorage.getItem('habitData')) || {};
+			let notesData = JSON.parse(localStorage.getItem('notesData')) || {};
 
 			// Initialize
 			function init() {
@@ -514,7 +571,35 @@
 				document.getElementById('today-date').textContent = today;
 
 				renderHabits();
+				loadDailyNotes();
 				renderHeatmap('week');
+			}
+
+			// Load daily notes
+			function loadDailyNotes() {
+				const todayKey = getTodayKey();
+				const notesTextarea = document.getElementById('daily-notes');
+				const charCount = document.getElementById('notes-char-count');
+
+				if (notesData[todayKey]) {
+					notesTextarea.value = notesData[todayKey];
+				} else {
+					notesTextarea.value = '';
+				}
+
+				charCount.textContent = notesTextarea.value.length;
+			}
+
+			// Save daily notes
+			function saveDailyNotes() {
+				const todayKey = getTodayKey();
+				const notesTextarea = document.getElementById('daily-notes');
+				const charCount = document.getElementById('notes-char-count');
+
+				notesData[todayKey] = notesTextarea.value;
+				localStorage.setItem('notesData', JSON.stringify(notesData));
+
+				charCount.textContent = notesTextarea.value.length;
 			}
 
 			function renderHabits() {
@@ -753,8 +838,9 @@
 			function exportData() {
 				const dataToExport = {
 					habitData: habitData,
+					notesData: notesData,
 					exportDate: new Date().toISOString(),
-					version: '1.0',
+					version: '1.1',
 				};
 
 				const dataStr = JSON.stringify(dataToExport, null, 2);
@@ -787,8 +873,15 @@
 							habitData = { ...habitData, ...imported.habitData };
 							localStorage.setItem('habitData', JSON.stringify(habitData));
 
+							// Import notes if present
+							if (imported.notesData) {
+								notesData = { ...notesData, ...imported.notesData };
+								localStorage.setItem('notesData', JSON.stringify(notesData));
+							}
+
 							// Refresh displays
 							renderHabits();
+							loadDailyNotes();
 							if (currentView !== 'today') {
 								renderStats(currentView);
 								renderHeatmap(currentView);
@@ -823,10 +916,13 @@
 				) {
 					if (confirm('Really delete everything? This is your last chance!')) {
 						habitData = {};
+						notesData = {};
 						localStorage.removeItem('habitData');
+						localStorage.removeItem('notesData');
 
 						// Refresh displays
 						renderHabits();
+						loadDailyNotes();
 						if (currentView !== 'today') {
 							renderStats(currentView);
 							renderHeatmap(currentView);
